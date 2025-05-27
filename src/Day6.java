@@ -18,6 +18,7 @@ public class Day6 {
     private int depth = -1;
     private enum WalkState {ONMAP, OFFMAP, LOOP};
     WalkState curState = WalkState.ONMAP;
+    int reverseCount = 0;
 
 
     private void copyMap (char[][] src, char[][] dest) {
@@ -91,47 +92,66 @@ public class Day6 {
 
     private void walk () {
 
-        int nextX = guardPos[0];
-        int nextY = guardPos[1];
+        int nextX;
+        int nextY;
+        int turnCount = 0;
+        boolean turned;
 
-        switch (direction) {
-            case UP:
-                nextY--;
-            break;
+        do {
+            turned = false;
 
-            case RIGHT:
-                nextX++;
-            break;
+            nextX = guardPos[0];
+            nextY = guardPos[1];
 
-            case DOWN:
-                nextY++;
-            break;
+            switch (direction) {
+                case UP:
+                    nextY--;
+                    break;
 
-            case LEFT:
-                nextX--;
-            break;
-        }
+                case RIGHT:
+                    nextX++;
+                    break;
+
+                case DOWN:
+                    nextY++;
+                    break;
+
+                case LEFT:
+                    nextX--;
+                    break;
+            }
+
+            if (nextY < 0 || nextX < 0 || nextY >= depth || nextX >= width) {
+                curState = WalkState.OFFMAP;
+            } else if (map[nextX][nextY] == '#' || map[nextX][nextY] == 'O') {
+                direction = (direction + 1) % 4;
+                turned = true;
+                turnCount++;
+            }
+        } while (curState != WalkState.OFFMAP && turned);
 
         if (nextY < 0 || nextX < 0 || nextY >= depth || nextX >= width) {
             curState = WalkState.OFFMAP;
         }
 
-        if (curState == WalkState.ONMAP) {
-
-            if (map[nextX][nextY] == '#' || map[nextX][nextY] == 'O') {
-                direction = (direction + 1) % 4;
-            }
-            else {
-                guardPos[0] = nextX;
-                guardPos[1] = nextY;
-            }
-
-            //if (  map[nextX][nextY] == (char)('0' + direction) ){
-            if (isLoop(direction, (int) (map[nextX][nextY] - '0'))){
-                curState = WalkState.LOOP;
-            }
+        if (turnCount == 2) {
+            reverseCount++;
+        } else {
+            reverseCount = 0;
         }
 
+        if (curState == WalkState.ONMAP) {
+
+            guardPos[0] = nextX;
+            guardPos[1] = nextY;
+
+            if (map[nextX][nextY] == (char) ('0' + direction) || reverseCount == 2) {
+                {
+                    curState = WalkState.LOOP;
+                }
+            }
+
+        }
     }
 
     int countX(){
