@@ -26,6 +26,7 @@ public class AoC {
 
     public int getResult (){
         int result = -1;
+        long longRes = -1;
 
         try {
             openFile();
@@ -84,6 +85,16 @@ public class AoC {
                         result = task6.doTaskTwo();
                     }
                     break;
+
+                case 7:
+                    Day7 task7 = new Day7 (file);
+                    if (testNo == 1)
+                        task7.doTaskOne();
+                    else {
+                        result = task7.doTaskTwo();
+                    }
+                    break;
+
 
                 default:
                         System.out.println("Day " + dayNo + " not implemented yet");
