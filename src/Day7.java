@@ -30,24 +30,30 @@ public class Day7 {
             }
         }
 
-        public boolean isPossible(long curTotal, int pos) {
+        public boolean isPossible(long curTotal, int pos, boolean task2) {
             boolean possible = false;
 
             if (pos < values.size()) {
-                possible = isPossible(curTotal + values.get(pos), pos + 1);
+
+                if (task2 && curTotal > 0) {
+                    String strVal = "" + curTotal + "" + values.get(pos);
+
+                    long newVal = Long.parseLong(strVal);
+                    possible = isPossible(newVal, pos + 1, task2);
+
+                }
+
+                if (!possible) {
+                    possible = isPossible(curTotal + values.get(pos), pos + 1, task2);
+                }
 
                 if (!possible) {
                     if (curTotal == 0) {
                         curTotal = 1;
                     }
 
-                    possible = isPossible(curTotal * values.get(pos), pos + 1);
+                    possible = isPossible(curTotal * values.get(pos), pos + 1, task2);
                 }
-
-                if (!possible) {
-                    
-                }
-
 
             } else {
                 return (curTotal == target);
@@ -73,7 +79,7 @@ public class Day7 {
         long total = 0;
 
         for (Equation equation : equations) {
-            if (equation.isPossible(0,0)) {
+            if (equation.isPossible(0,0, false)) {
                 total += equation.getTarget();
             }
         }
@@ -84,6 +90,17 @@ public class Day7 {
     }
 
     public int doTaskTwo()  {
+        long total = 0;
+
+        for (Equation equation : equations) {
+            if (equation.isPossible(0,0, true)) {
+                System.out.println(equation.raw);
+                total += equation.getTarget();
+            }
+        }
+
+        System.out.println(total);
+
 
         return -1;
     }
