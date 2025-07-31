@@ -104,6 +104,32 @@ public class AoC {
                     }
                     break;
 
+                case 9:
+                    Day9 task9 = new Day9 (file);
+                    if (testNo == 1)
+                        task9.doTaskOne();
+                    else {
+                        task9.doTaskTwo();
+                    }
+                    break;
+
+                case 10:
+                    Day10 task10 = new Day10 (file);
+                    if (testNo == 1)
+                        result = task10.doTaskOne();
+                    else {
+                        result = task10.doTaskTwo();
+                    }
+                    break;
+
+                case 11:
+                    Day11 task11 = new Day11 (file);
+                    if (testNo == 1)
+                        result = task11.doTaskOne();
+                    else {
+                        result = task11.doTaskTwo();
+                    }
+                    break;
 
                 default:
                         System.out.println("Day " + dayNo + " not implemented yet");
